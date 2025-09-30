@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36203.30 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KadicNotificationApi", "KadicNotificationApi\KadicNotificationApi.csproj", "{ED24F1E6-E679-41D8-B38B-663F0424FFED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KadicNotificationApi.Domain", "KadicNotificationApi.Domain\KadicNotificationApi.Domain.csproj", "{79B04B63-71FF-49CC-8D15-CF02CB564253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KadicNotificationApi.Infraestructure", "KadicNotificationApi.Infraestructure\KadicNotificationApi.Infraestructure.csproj", "{EAB8DD62-ABC9-43AF-AA6B-E94387DBCC36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KadicNotificationApi.Application", "KadicNotificationApi.Application\KadicNotificationApi.Application.csproj", "{1187D4AF-2E14-41EC-8D35-B14A02924C9E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED24F1E6-E679-41D8-B38B-663F0424FFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED24F1E6-E679-41D8-B38B-663F0424FFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED24F1E6-E679-41D8-B38B-663F0424FFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED24F1E6-E679-41D8-B38B-663F0424FFED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79B04B63-71FF-49CC-8D15-CF02CB564253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79B04B63-71FF-49CC-8D15-CF02CB564253}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79B04B63-71FF-49CC-8D15-CF02CB564253}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79B04B63-71FF-49CC-8D15-CF02CB564253}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAB8DD62-ABC9-43AF-AA6B-E94387DBCC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAB8DD62-ABC9-43AF-AA6B-E94387DBCC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAB8DD62-ABC9-43AF-AA6B-E94387DBCC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAB8DD62-ABC9-43AF-AA6B-E94387DBCC36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1187D4AF-2E14-41EC-8D35-B14A02924C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1187D4AF-2E14-41EC-8D35-B14A02924C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1187D4AF-2E14-41EC-8D35-B14A02924C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1187D4AF-2E14-41EC-8D35-B14A02924C9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81AC06EE-B602-4476-88E4-9DD40E325951}
+	EndGlobalSection
+EndGlobal

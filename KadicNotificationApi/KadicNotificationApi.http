@@ -1,0 +1,6 @@
+@KadicNotificationApi_HostAddress = http://localhost:5155
+
+GET {{KadicNotificationApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
