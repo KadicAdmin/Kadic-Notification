@@ -1,4 +1,4 @@
-﻿namespace KadicNotificationApi.Models;
+﻿namespace KadicNotificationApi.Domain.Entities;
 
 public record EmailAddress(string Address, string? Name);
 

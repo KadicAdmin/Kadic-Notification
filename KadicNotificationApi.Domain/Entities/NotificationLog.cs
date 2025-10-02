@@ -1,4 +1,5 @@
 ﻿using KadicNotificationApi.Domain.Enums;
+using KadicNotificationApi.Domain.ValueObjects;
 
 namespace KadicNotificationApi.Domain.Entities
 {

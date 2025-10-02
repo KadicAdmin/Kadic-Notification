@@ -18,7 +18,7 @@ public class SendEmailService : IEmailSender
     {
         _opt = opt.Value;
     }
-
+    //public Task SendAsync(EmailMessage request, CancellationToken cancellationToken = default)
     public async Task SendAsync(SendEmailRequest req, CancellationToken ct = default)
     {
         try
@@ -84,11 +84,6 @@ public class SendEmailService : IEmailSender
         {
             throw;
         }
-    }
+    }   
+   
 }
-
-
-
-
-
-

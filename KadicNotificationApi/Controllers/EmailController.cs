@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Interfaces;
-using KadicNotificationApi.Models;
+using KadicNotificationApi.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -11,10 +12,10 @@ namespace KadicNotificationApi.Controllers;
 public class EmailController : ControllerBase
 {
     private readonly IEmailSender _emailSender;
-    private readonly IValidator<EmailMessage> _validator;
+    private readonly IValidator<SendEmailRequest> _validator;
 
 
-    public EmailController(IEmailSender sender, IValidator<EmailMessage> validator)
+    public EmailController(IEmailSender sender, IValidator<SendEmailRequest> validator)
     {
         _emailSender = sender;
         _validator = validator;
@@ -24,7 +25,7 @@ public class EmailController : ControllerBase
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 
-    public async Task<IActionResult> SendEmail([FromBody] EmailMessage request, CancellationToken cancellation)
+    public async Task<IActionResult> SendEmail([FromBody] SendEmailRequest request, CancellationToken cancellation)
     {
         var result = await _validator.ValidateAsync(request, cancellation);
 

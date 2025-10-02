@@ -1,8 +1,8 @@
-﻿using KadicNotificationApi.Domain.Entities;
-using KadicNotificationApi.Infraestructure.Config;
+﻿using KadicNotificationApi.Infraestructure.Config;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
+using KadicNotificationApi.Domain.Entities;
 
 namespace KadicNotificationApi.Infraestructure.Smtp;
 
@@ -15,7 +15,7 @@ public class SmtpEmailSender
         _options = options.Value;
     }
 
-    public async Task SendAsync(EmailMessage request)
+    public async Task SendEmailAsync(EmailMessage request)
     {
         using var client  =  new SmtpClient(_options.SmtpServer, _options.Port)
         {

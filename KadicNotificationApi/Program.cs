@@ -1,24 +1,30 @@
+using KadicNotificationApi.Application.Validators;
+using KadicNotificationApi.Infraestructure.Config;
+using FluentValidation;
+using KadicNotificationApi.Application.Interfaces;
+using KadicNotificationApi.Application.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+//Controllers
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+//Settings
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+
+//Fluent Validation
+builder.Services.AddValidatorsFromAssemblyContaining<SendEmailCommandValidator>();
+
+//Services
+builder.Services.AddScoped<IEmailSender, SendEmailService>();
+
+//Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.MapControllers();
 
