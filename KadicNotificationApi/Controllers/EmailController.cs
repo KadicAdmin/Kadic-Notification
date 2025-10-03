@@ -1,8 +1,12 @@
 ﻿using FluentValidation;
 using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Interfaces;
-using KadicNotificationApi.Domain.Entities;
+using MailKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using System.Security.Authentication;
 
 
 namespace KadicNotificationApi.Controllers;
@@ -43,4 +47,24 @@ public class EmailController : ControllerBase
         await _emailSender.SendAsync(request, cancellation);
         return Ok(new { message = "Correo enviado con éxito." });
     }
+
+    [HttpPost("TestSmtp")]
+    public async Task<IActionResult> TestSmtp()
+    {
+        var message = new MimeMessage();
+        message.From.Add(MailboxAddress.Parse("admin@kadictechnology.com"));
+        message.To.Add(MailboxAddress.Parse("ricardo.devsoftware@gmail.com"));
+        message.Subject = "Prueba SMTP";
+        message.Body = new TextPart("plain") { Text = "Hola, prueba de SMTP GoDaddy" };
+
+        using var client = new SmtpClient();
+        await client.ConnectAsync("smtp.office365.com", 587, SecureSocketOptions.StartTls);
+        client.AuthenticationMechanisms.Remove("XOAUTH2");
+
+        await client.AuthenticateAsync("admin@kadictechnology.com", "IWillNeverForgetIt!!2025");
+        await client.SendAsync(message);
+        await client.DisconnectAsync(true);
+
+        return Ok();
+    }    
 }

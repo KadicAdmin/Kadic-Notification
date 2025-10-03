@@ -18,7 +18,6 @@ public class SendEmailService : IEmailSender
     {
         _opt = opt.Value;
     }
-    //public Task SendAsync(EmailMessage request, CancellationToken cancellationToken = default)
     public async Task SendAsync(SendEmailRequest req, CancellationToken ct = default)
     {
         try
@@ -73,8 +72,7 @@ public class SendEmailService : IEmailSender
 
             await client.ConnectAsync(_opt.SmtpHost, _opt.SmtpPort, secure, ct);
 
-            // Algunos servidores requieren quitar OAuth mecánicas
-            //client.AuthenticationMechanisms.Remove("XOAUTH2");
+            client.AuthenticationMechanisms.Remove("XOAUTH2");
 
             await client.AuthenticateAsync(_opt.Username, _opt.Password, ct);
             await client.SendAsync(message, ct);
