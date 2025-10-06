@@ -1,4 +1,5 @@
-﻿namespace KadicNotificationApi.Application.DTOs;
+﻿using FluentValidation;
+namespace KadicNotificationApi.Application.DTOs;
 
 public class EmailAddressDto
 {

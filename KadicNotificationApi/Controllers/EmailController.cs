@@ -1,12 +1,10 @@
 ﻿using FluentValidation;
 using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Interfaces;
-using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
-using System.Security.Authentication;
 
 
 namespace KadicNotificationApi.Controllers;
