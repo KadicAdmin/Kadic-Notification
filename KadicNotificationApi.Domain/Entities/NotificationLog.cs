@@ -5,14 +5,13 @@ namespace KadicNotificationApi.Domain.Entities
 {
     public class NotificationLog
     {
-        public Guid Id { get; private set; }
-        public EmailAddress To { get; private set; }
-        public string Subject { get; private set; }
-        public DateTime SentAt { get; private set; }
-        public EmailStatus Status { get; private set; }
-        public string? ErrorMessage { get; private set; }
-
-        private NotificationLog() { }
+        public Guid Id { get; set; }
+        public EmailAddress To { get; set; }
+        public string Subject { get; set; }
+        public DateTime SentAt { get; set; }
+        public EmailStatus Status { get; set; }
+        public string? ErrorMessage { get; set; }
+        
 
         public NotificationLog(EmailAddress to, string subject, EmailStatus status, string? errorMessage = null)
         {

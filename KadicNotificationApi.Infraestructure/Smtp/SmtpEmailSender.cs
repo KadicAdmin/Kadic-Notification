@@ -15,7 +15,7 @@ public class SmtpEmailSender
         _options = options.Value;
     }
 
-    public async Task SendEmailAsync(EmailMessage request)
+    public async Task  SendEmailAsync(EmailMessage request)
     {
         using var client  =  new SmtpClient(_options.SmtpServer, _options.Port)
         {
