@@ -1,29 +1,25 @@
 ﻿using FluentValidation;
 using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Interfaces;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
-
 
 namespace KadicNotificationApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmailController : ControllerBase
+public class NotificationController : ControllerBase
 {
     private readonly IEmailSender _emailSender;
     private readonly IValidator<SendEmailRequest> _validator;
 
 
-    public EmailController(IEmailSender sender, IValidator<SendEmailRequest> validator)
+    public NotificationController(IEmailSender sender, IValidator<SendEmailRequest> validator)
     {
         _emailSender = sender;
         _validator = validator;
     }
 
-    [HttpPost("send")]
+    [HttpPost("SendEmail")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 
@@ -45,24 +41,4 @@ public class EmailController : ControllerBase
         await _emailSender.SendAsync(request, cancellation);
         return Ok(new { message = "Correo enviado con éxito." });
     }
-
-    [HttpPost("TestSmtp")]
-    public async Task<IActionResult> TestSmtp()
-    {
-        var message = new MimeMessage();
-        message.From.Add(MailboxAddress.Parse("admin@kadictechnology.com"));
-        message.To.Add(MailboxAddress.Parse("ricardo.devsoftware@gmail.com"));
-        message.Subject = "Prueba SMTP";
-        message.Body = new TextPart("plain") { Text = "Hola, prueba de SMTP GoDaddy" };
-
-        using var client = new SmtpClient();
-        await client.ConnectAsync("smtp.office365.com", 587, SecureSocketOptions.StartTls);
-        client.AuthenticationMechanisms.Remove("XOAUTH2");
-
-        await client.AuthenticateAsync("admin@kadictechnology.com", "IWillNeverForgetIt!!2025");
-        await client.SendAsync(message);
-        await client.DisconnectAsync(true);
-
-        return Ok();
-    }    
 }

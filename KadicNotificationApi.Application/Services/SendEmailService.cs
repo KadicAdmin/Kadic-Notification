@@ -58,7 +58,7 @@ public class SendEmailService : IEmailSender
 
             message.Body = bodyBuilder.ToMessageBody();
 
-            using var client = new SmtpClient(); // Ensure MailKit's SmtpClient is used
+            using var client = new SmtpClient(); 
 
             client.Timeout = _opt.TimeoutSeconds * 1000;
 
