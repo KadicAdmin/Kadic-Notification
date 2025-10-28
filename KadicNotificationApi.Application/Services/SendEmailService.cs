@@ -71,7 +71,6 @@ public class SendEmailService : IEmailSender
             };
 
             client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
-            //client.Connect("smtp.Office365.com", 587, SecureSocketOptions.StartTls);
             await client.ConnectAsync(_opt.SmtpHost, _opt.SmtpPort, secure, ct);
 
             client.AuthenticationMechanisms.Remove("XOAUTH2");
