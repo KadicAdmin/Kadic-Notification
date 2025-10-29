@@ -58,7 +58,7 @@ public class SendEmailService : IEmailSender
 
             message.Body = bodyBuilder.ToMessageBody();
 
-            using var client = new SmtpClient(); // Ensure MailKit's SmtpClient is used
+            using var client = new SmtpClient(); 
 
             client.Timeout = _opt.TimeoutSeconds * 1000;
 
@@ -70,6 +70,7 @@ public class SendEmailService : IEmailSender
                 _ => SecureSocketOptions.StartTls
             };
 
+            client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
             await client.ConnectAsync(_opt.SmtpHost, _opt.SmtpPort, secure, ct);
 
             client.AuthenticationMechanisms.Remove("XOAUTH2");
