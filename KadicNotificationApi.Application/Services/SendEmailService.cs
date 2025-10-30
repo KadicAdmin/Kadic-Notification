@@ -39,7 +39,15 @@ public class SendEmailService : IEmailSender
 
             message.Subject = req.Subject;
 
+            var bodyHtml = "";
+            //Call template renderer here
+            //var template = service.GetTemplateById(templateId)
+            //var bodyHtml = template.Description;
+
             var bodyBuilder = new BodyBuilder();
+
+            if (!string.IsNullOrWhiteSpace(bodyHtml))
+                bodyBuilder.HtmlBody = bodyHtml;
 
             if (!string.IsNullOrWhiteSpace(req.HtmlBody))
                 bodyBuilder.HtmlBody = req.HtmlBody;
