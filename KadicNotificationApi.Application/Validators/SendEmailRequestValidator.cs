@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using KadicNotificationApi.Application.DTOs;
+using KadicNotificationApi.Application.DTOs.GetDto;
 namespace KadicNotificationApi.Application.Validators
 {
     public class SendEmailRequestValidator : AbstractValidator<SendEmailRequest>

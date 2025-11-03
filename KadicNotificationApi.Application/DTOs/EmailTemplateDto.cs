@@ -1,6 +1,6 @@
-﻿namespace KadicNotificationApi.Domain.Entities
+﻿namespace KadicNotificationApi.Application.DTOs
 {
-    public class EmailTemplateEntity
+    public class EmailTemplateDto
     {
         public int Id { get; set; }
 

@@ -8,7 +8,7 @@ using MailKit.Net.Smtp;
 
 namespace KadicNotificationApi.Infraestructure.MailKit
 {
-    public class MailKitEmailSender 
+    public class MailKitEmailSender
     {
         private readonly EmailSettings _options;
 
@@ -17,40 +17,40 @@ namespace KadicNotificationApi.Infraestructure.MailKit
             _options = options.Value;
         }
 
-  public async Task SendAsync(EmailMessage request)
-{
-    var message = new MimeMessage();
-    message.From.Add(new MailboxAddress(_options.DisplayName, _options.From));
+        public async Task SendAsync(EmailMessage request)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(_options.DisplayName, _options.From));
 
-  
-    foreach (var to in request.To)
-        message.To.Add(new MailboxAddress(to.Name, to.Address));
 
-    if (request.Cc != null)
-    {
-        foreach (var cc in request.Cc)
-            message.Cc.Add(new MailboxAddress(cc.Name, cc.Address));
-    }
+            foreach (var to in request.To)
+                message.To.Add(new MailboxAddress(to.Name, to.Address));
 
-    if (request.Bcc != null)
-    {
-        foreach (var bcc in request.Bcc)
-            message.Bcc.Add(new MailboxAddress(bcc.Name, bcc.Address));
-    }
+            if (request.Cc != null)
+            {
+                foreach (var cc in request.Cc)
+                    message.Cc.Add(new MailboxAddress(cc.Name, cc.Address));
+            }
 
-    message.Subject = request.Subject;
+            if (request.Bcc != null)
+            {
+                foreach (var bcc in request.Bcc)
+                    message.Bcc.Add(new MailboxAddress(bcc.Name, bcc.Address));
+            }
 
-    message.Body = new TextPart(request.IsBodyHtml ? "html" : "plain")
-    {
-        Text = request.Body
-    };
+            message.Subject = request.Subject;
 
-    using var client = new SmtpClient();
-    await client.ConnectAsync(_options.SmtpServer, _options.Port, true);
-    await client.AuthenticateAsync(_options.Username, _options.Password);
-    await client.SendAsync(message);
-    await client.DisconnectAsync(true);
-  }
-        
+            message.Body = new TextPart(request.IsBodyHtml ? "html" : "plain")
+            {
+                Text = request.Body
+            };
+
+            using var client = new SmtpClient();
+            await client.ConnectAsync(_options.SmtpServer, _options.Port, true);
+            await client.AuthenticateAsync(_options.Username, _options.Password);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+
     }
 }

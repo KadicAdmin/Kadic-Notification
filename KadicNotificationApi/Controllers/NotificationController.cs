@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
-using KadicNotificationApi.Application.DTOs;
+using KadicNotificationApi.Application.DTOs.GetDto;
 using KadicNotificationApi.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Crmf;
 
 namespace KadicNotificationApi.Controllers;
 
@@ -23,9 +24,9 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 
-    public async Task<IActionResult> SendEmail([FromBody] SendEmailRequest request, CancellationToken cancellation)
+    public async Task<IActionResult> SendEmail([FromBody] SendEmailRequest request)
     {
-        var result = await _validator.ValidateAsync(request, cancellation);
+        var result = await _validator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -38,7 +39,10 @@ public class NotificationController : ControllerBase
 
             return ValidationProblem(new ValidationProblemDetails(errors));
         }
-        await _emailSender.SendAsync(request, cancellation);
+        await _emailSender.SendAsync(request);
         return Ok(new { message = "Correo enviado con éxito." });
     }
+
+    //[HttpGet("{id}")]
+    //public async Task 
 }

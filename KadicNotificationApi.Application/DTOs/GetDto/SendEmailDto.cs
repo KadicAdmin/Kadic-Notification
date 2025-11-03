@@ -1,4 +1,4 @@
-﻿namespace KadicNotificationApi.Application.DTOs;
+﻿namespace KadicNotificationApi.Application.DTOs.GetDto;
 
 public class EmailAddressDto
 {

@@ -3,8 +3,8 @@ using KadicNotificationApi.Application.Services;
 using KadicNotificationApi.Infraestructure.Config;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Validators;
+using KadicNotificationApi.Application.DTOs.GetDto;
 
 
 var builder = WebApplication.CreateBuilder(args);

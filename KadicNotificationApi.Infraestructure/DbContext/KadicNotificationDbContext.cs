@@ -1,7 +1,7 @@
-﻿using KadicNotificationApi.Infraestructure.Persistence.Repositories;
+﻿using KadicNotificationApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace KadicNotificationApi.Infraestructure.Persistence.DbContexts;
+namespace KadicNotificationApi.Infraestructure.DbContexts;
 
 public class KadicNotificationDbContext : DbContext
 {

@@ -1,7 +1,8 @@
-﻿using KadicNotificationApi.Infraestructure.Persistence.DbContexts;
+﻿using KadicNotificationApi.Infraestructure.DbContexts;
+using KadicNotificationApi.Domain.Entities;
 using KadicNotificationApi.Infraestructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-namespace KadicNotificationApi.Infraestructure.Persistence.Repositories;
+namespace KadicNotificationApi.Infraestructure.Repositories.Implementation;
 
 public class TemplateRepository: ITemplateRepository
 {

@@ -1,4 +1,4 @@
-﻿using KadicNotificationApi.Infraestructure.Persistence.Repositories;
+﻿using KadicNotificationApi.Domain.Entities;
 
 namespace KadicNotificationApi.Infraestructure.Repositories.Interfaces
 {

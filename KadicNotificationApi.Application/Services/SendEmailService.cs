@@ -1,4 +1,4 @@
-﻿using KadicNotificationApi.Application.DTOs;
+﻿using KadicNotificationApi.Application.DTOs.GetDto;
 using KadicNotificationApi.Application.Interfaces;
 using KadicNotificationApi.Infraestructure.Config;
 using MailKit.Net.Smtp;
@@ -18,7 +18,7 @@ public class SendEmailService : IEmailSender
     {
         _opt = opt.Value;
     }
-    public async Task SendAsync(SendEmailRequest req, CancellationToken ct = default)
+    public async Task SendAsync(SendEmailRequest req)
     {
         try
         {
@@ -79,13 +79,13 @@ public class SendEmailService : IEmailSender
             };
 
             client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
-            await client.ConnectAsync(_opt.SmtpHost, _opt.SmtpPort, secure, ct);
+            await client.ConnectAsync(_opt.SmtpHost, _opt.SmtpPort, secure);
 
             client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-            await client.AuthenticateAsync(_opt.Username, _opt.Password, ct);
-            await client.SendAsync(message, ct);
-            await client.DisconnectAsync(true, ct);
+            await client.AuthenticateAsync(_opt.Username, _opt.Password);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
         }
         catch (Exception e)
         {
