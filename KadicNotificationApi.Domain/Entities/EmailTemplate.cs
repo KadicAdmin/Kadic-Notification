@@ -1,27 +1,14 @@
-﻿namespace KadicNotificationApi.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace KadicNotificationApi.Domain.Entities
 {
     public class EmailTemplate
     {
-        public Guid Id { get; private set; }
-        public string Name { get; private set; }   // Nombre identificador de la plantilla
-        public string Subject { get; private set; }
-        public string Body { get; private set; }
-
-        public EmailTemplate(string name, string subject, string body)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-            Subject = subject;
-            Body = body;
-        }
-
-        public string ApplyPlaceholders(Dictionary<string, string> values)
-        {
-            string result = Body;
-            foreach (var kv in values)
-                result = result.Replace($"{{{kv.Key}}}", kv.Value);
-
-            return result;
-        }
+        public int Id { get; set; }
+        public string Subjet { get; set; }       
+        public int EmailTemplatesTypeId { get; set; }
+        [ForeignKey("EmailTemplatesTypeId")]
+        public EmailTemplatesType Type { get; set; }
+        public string Description { get; set; }        
     }
 }

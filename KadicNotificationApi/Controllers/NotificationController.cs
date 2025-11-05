@@ -23,9 +23,9 @@ public class NotificationController : ControllerBase
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 
-    public async Task<IActionResult> SendEmail([FromBody] SendEmailRequest request, CancellationToken cancellation)
+    public async Task<IActionResult> SendEmail([FromBody] SendEmailRequest request)
     {
-        var result = await _validator.ValidateAsync(request, cancellation);
+        var result = await _validator.ValidateAsync(request);
 
         if (!result.IsValid)
         {
@@ -38,7 +38,7 @@ public class NotificationController : ControllerBase
 
             return ValidationProblem(new ValidationProblemDetails(errors));
         }
-        await _emailSender.SendAsync(request, cancellation);
+        await _emailSender.SendAsync(request);
         return Ok(new { message = "Correo enviado con éxito." });
     }
 }
