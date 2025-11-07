@@ -6,5 +6,6 @@
         public string Subject { get; set; } 
         public string? TextBody { get; set; }
         public int TemplateTypeId { get; set; }
+        public EmailTemplateType? TemplateType { get; set; }
     }
 }
