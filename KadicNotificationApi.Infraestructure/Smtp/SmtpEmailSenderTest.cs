@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using KadicNotificationApi.Domain.Entities;
 
-namespace KadicNotificationApi.Infraestructure.Smtp;
+namespace KadicNotificationApi.Infraestructure.SMTP;
 
 public class SmtpEmailSenderTest 
 {

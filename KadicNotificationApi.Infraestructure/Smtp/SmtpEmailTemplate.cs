@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using KadicNotificationApi.Domain.Entities;
 
-namespace KadicNotificationApi.Infraestructure.Smtp;
+namespace KadicNotificationApi.Infraestructure.SMTP;
 
 public class SmtpEmailTemplate
 {
@@ -28,9 +28,9 @@ public class SmtpEmailTemplate
         using var mail = new MailMessage
         {
             From = new MailAddress(_options.FromAddress, _options.FromName),
-            Subject = template.Subject,
-            Body = template.TextBody ?? string.Empty,
-            IsBodyHtml = true 
+            Subject = template.Subject?.Trim() ?? string.Empty,
+            Body = (template.TemplateType?.HtmlBody ?? string.Empty).Trim(),
+            IsBodyHtml = true
         };
 
         foreach (var addr in to) mail.To.Add(addr.Trim());
