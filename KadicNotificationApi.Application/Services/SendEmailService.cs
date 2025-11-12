@@ -12,9 +12,9 @@ namespace KadicNotificationApi.Application.Services;
 
 public class SendEmailService : IEmailSender
 {
-    private readonly EmailSettings _opt;
+    private readonly EmailSettingsTest _opt;
 
-    public SendEmailService(IOptions<EmailSettings> opt)
+    public SendEmailService(IOptions<EmailSettingsTest> opt)
     {
         _opt = opt.Value;
     }

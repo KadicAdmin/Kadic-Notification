@@ -13,7 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Settings
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+builder.Services.AddOptions<EmailSettings>()
+    .Bind(builder.Configuration.GetSection("EmailSettings"))
+    .ValidateOnStart();
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -29,6 +31,7 @@ builder.Services.AddScoped<IEmailSender, SendEmailService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
+
 
 // Swagger
 app.UseSwagger();

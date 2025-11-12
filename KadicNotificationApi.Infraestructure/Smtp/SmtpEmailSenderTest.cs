@@ -4,13 +4,13 @@ using System.Net;
 using System.Net.Mail;
 using KadicNotificationApi.Domain.Entities;
 
-namespace KadicNotificationApi.Infraestructure.Smtp;
+namespace KadicNotificationApi.Infraestructure.SMTP;
 
-public class SmtpEmailSender 
+public class SmtpEmailSenderTest 
 {
-    private readonly EmailSettings _options;
+    private readonly EmailSettingsTest _options;
 
-    public SmtpEmailSender(IOptions<EmailSettings> options)
+    public SmtpEmailSenderTest(IOptions<EmailSettingsTest> options)
     {
         _options = options.Value;
     }
