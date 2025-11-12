@@ -1,8 +1,9 @@
-﻿using KadicNotificationApi.Infraestructure.Config;
+﻿using KadicNotificationApi.Domain.Entities;
+using KadicNotificationApi.Infraestructure.Config;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
-using KadicNotificationApi.Domain.Entities;
+using System.Text;
 
 namespace KadicNotificationApi.Infraestructure.SMTP;
 
@@ -30,10 +31,16 @@ public class SmtpEmailTemplate
             From = new MailAddress(_options.FromAddress, _options.FromName),
             Subject = template.Subject?.Trim() ?? string.Empty,
             Body = (template.TemplateType?.HtmlBody ?? string.Empty).Trim(),
-            IsBodyHtml = true
+            IsBodyHtml = true,
+
+            SubjectEncoding = Encoding.UTF8,
+            BodyEncoding = Encoding.UTF8
         };
 
         foreach (var addr in to) mail.To.Add(addr.Trim());
+
+        if (mail.To.Count == 0)
+            throw new InvalidOperationException("Debe especificar al menos un destinatario.");
 
         await client.SendMailAsync(mail);
     }
