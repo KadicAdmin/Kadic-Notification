@@ -1,5 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Hangfire;
+using Hangfire.SqlServer;
 using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Services.Implementation;
 using KadicNotificationApi.Application.Services.Interfaces;
@@ -23,8 +25,8 @@ builder.Services.AddOptions<EmailSettings>()
     .ValidateOnStart();
 
 // DbContext
-builder.Services.AddDbContext<NotificationDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<NotificationDbContext>
+    (opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
@@ -40,10 +42,29 @@ builder.Services.AddScoped<SmtpEmailTemplate>();
 // Swagger (antes de Build)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//HangFire
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddHangfire(Configuration => Configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+        .UseSimpleAssemblyNameTypeSerializer()
+        .UseRecommendedSerializerSettings()
+        .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+        {
+            CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+            QueuePollInterval = TimeSpan.Zero,
+            UseRecommendedIsolationLevel = true,
+            DisableGlobalLocks = true
+        }));
+builder.Services.AddHangfireServer(options => options.SchedulePollingInterval = TimeSpan.FromMinutes(1));
+
+
 var app = builder.Build();
 
 
 // Swagger
+app.UseHangfireDashboard();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();

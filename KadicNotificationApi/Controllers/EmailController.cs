@@ -1,4 +1,4 @@
-﻿
+﻿using Hangfire;
 using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +8,30 @@ namespace KadicNotificationApi.API.Controllers
     [ApiController]
     [Route("api/email")]
     public class EmailController : ControllerBase
-    {
-        private readonly IEmailTemplateService _service;
+    {       
+        private readonly IBackgroundJobClient _backgroundJobClient;
 
-        public EmailController(IEmailTemplateService service)
+        public EmailController(IEmailTemplateService service, IBackgroundJobClient backgroundJobClient)
         {
-            _service = service;
+          
+            _backgroundJobClient = backgroundJobClient;
         }
 
         [HttpPost("send-by-template")]
-        public async Task<IActionResult> SendByTemplate([FromBody] SendByTemplateRequestDto dto)
+        public IActionResult SendByTemplate([FromBody] SendByTemplateRequestDto dto)
         {
-            await _service.SendAsync(dto);
-            return Ok(new { message = "Correo enviado." });
+          
+            _backgroundJobClient.Enqueue<IEmailTemplateService>(s => s.SendAsync(dto));
+
+            return Ok(new { message = "Correo en cola para enviar." });
+        }
+
+        [HttpPost("schedule")]
+        public IActionResult Schedule([FromBody] SendByTemplateRequestDto dto)
+        {            
+            _backgroundJobClient.Schedule<IEmailTemplateService>(s => s.SendAsync(dto), TimeSpan.FromMinutes(1));
+
+            return Ok(new { message = "Correo en cola para enviar." });
         }
     }
 }
