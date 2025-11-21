@@ -30,13 +30,13 @@ builder.Services.AddDbContext<NotificationDbContext>
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<SendByTemplateRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<SendTemplateValidator>();
 
 // Servicios
-builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddScoped<ISendTemplateService, SendTemplateService>();
 
 // Repository
-builder.Services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
+builder.Services.AddScoped<ISendTemplateRepository, SendTemplateRepository>();
 builder.Services.AddScoped<SmtpEmailTemplate>();
 
 // Swagger (antes de Build)

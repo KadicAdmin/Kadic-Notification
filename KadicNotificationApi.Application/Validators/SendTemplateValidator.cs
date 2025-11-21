@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using KadicNotificationApi.Application.DTOs;
+using KadicNotificationApi.Application.DTOs.SaveDto;
 
 namespace KadicNotificationApi.Application.Validators
 {
-    public class SendByTemplateRequestValidator : AbstractValidator<SendByTemplateRequestDto>
+    public class SendTemplateValidator : AbstractValidator<SendTemplateSaveDto>
     {
-        public SendByTemplateRequestValidator()
+        public SendTemplateValidator()
         {
             RuleFor(x => x.TemplateId)
                 .GreaterThan(0).WithMessage("'templateId' debe ser mayor que cero.");

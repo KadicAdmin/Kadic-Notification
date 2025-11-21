@@ -21,4 +21,10 @@
     <ProjectReference Include="..\KadicNotificationApi.Infraestructure\KadicNotificationApi.Infraestructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="KadicTechnology.CommonLib">
+      <HintPath>..\..\..\..\..\Downloads\New folder\KadicTechnology.CommonLib\KadicTechnology.CommonLib\bin\Debug\net8.0\KadicTechnology.CommonLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
