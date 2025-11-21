@@ -1,24 +1,24 @@
-﻿using KadicNotificationApi.Application.DTOs;
+﻿using KadicNotificationApi.Application.DTOs.SaveDto;
 using KadicNotificationApi.Application.Services.Interfaces;
 using KadicNotificationApi.Infraestructure.Repository.Interface;
 using KadicNotificationApi.Infraestructure.SMTP;
 
 namespace KadicNotificationApi.Application.Services.Implementation;
 
-public class EmailTemplateService : IEmailTemplateService
+public class SendTemplateService : ISendTemplateService
 {
-    private readonly IEmailTemplateRepository _repo;
+    private readonly ISendTemplateRepository _repo;
     private readonly SmtpEmailTemplate _smtp;
 
-    public EmailTemplateService(
-        IEmailTemplateRepository repo,
+    public SendTemplateService(
+        ISendTemplateRepository repo,
         SmtpEmailTemplate smtp)
     {
         _repo = repo;
         _smtp = smtp;
     }
 
-    public async Task SendAsync(SendByTemplateRequestDto request)
+    public async Task SendAsync(SendTemplateSaveDto request)
     {
         var clean = new List<string>();
         var vistos = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
