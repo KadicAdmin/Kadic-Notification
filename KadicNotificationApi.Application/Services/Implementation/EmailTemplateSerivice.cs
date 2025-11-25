@@ -8,6 +8,7 @@ using KadicNotificationApi.Application.Mappings.SaveMappings;
 using KadicNotificationApi.Application.Mappings.UpdateMappings;
 using KadicNotificationApi.Application.Services.Interfaces;
 using KadicNotificationApi.Infraestructure.Repository.Interface;
+using KadicTechnology.CommonLib.Paginator;
 using KadicTechnology.CommonLib.Utils;
 using System.Net;
 
@@ -41,16 +42,20 @@ public class EmailTemplateSerivice : IEmailTemplateSerivice
         var entity = template.ToGetDto();
         return Result.Success(entity);
     }
-    public async Task<Result<IReadOnlyList<EmailTemplateGetDto>>> GetByTenant(int tenantId, int page, int pageSize)
+    public async Task<Result<PaginatorResponseDto<EmailTemplateGetDto>>> GetByTenant(int tenantId, PaginatorRequestDto paginatorRequestDto)
     {
-        var tenant = await _emailTemplateRepository.GetByTenantAsync(tenantId, page, pageSize);
-        if (tenant == null || !tenant.Any())
+        var pageResult = await _emailTemplateRepository.GetByTenantAsync(tenantId, paginatorRequestDto);
+        if (pageResult == null || !pageResult.Data.Any())
         {
             var error = new Error(HttpStatusCode.NotFound, "Registros No Encontrados");
-            return Result.Fail<IReadOnlyList<EmailTemplateGetDto>>(error);
+            return Result.Fail<PaginatorResponseDto<EmailTemplateGetDto>>(error);
         }
-        var dtoList = tenant.ToDto().ToList();
-        return Result.Success<IReadOnlyList<EmailTemplateGetDto>>(dtoList);
+        var dtoPaginator  = new PaginatorResponseDto<EmailTemplateGetDto>
+        {
+            Data = pageResult.Data.Select(et => et.ToGetDto()).ToList(),
+            PageSize = pageResult.PageSize 
+        };
+        return Result.Success(dtoPaginator);
     }
     public async Task<Result> Update(EmailTemplateUpdateDto emailTemplateUpdateDto)
     {

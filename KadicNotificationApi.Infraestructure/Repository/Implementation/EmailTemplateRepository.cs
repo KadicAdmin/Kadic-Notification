@@ -1,6 +1,8 @@
 ﻿using KadicNotificationApi.Domain.Entities;
 using KadicNotificationApi.Infraestructure.DbContexts;
 using KadicNotificationApi.Infraestructure.Repository.Interface;
+using KadicTechnology.CommonLib.Paginator;
+using KadicTechnology.CommonLib.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace KadicNotificationApi.Infraestructure.Repository.Implementation;
@@ -17,13 +19,36 @@ public class EmailTemplateRepository : IEmailTemplateRepository
     {
         return await _db.EmailTemplates.FindAsync(id, tenantId);
     }
-    public async Task<IReadOnlyList<EmailTemplate>> GetByTenantAsync(int tenantId, int page, int pageSize)
-    {      
-            return await _db.EmailTemplates 
-            .Where(t => t.TenantId == tenantId)
-            .Skip((page - 1) * pageSize)
+    public async Task<PaginatorResponseDto<EmailTemplate>> GetByTenantAsync(int tenantId, PaginatorRequestDto paginatorRequestDto)
+    {
+
+        int page = 0;
+        int pageSize = paginatorRequestDto.PageSize ?? 25;
+
+        if (paginatorRequestDto.Page == null || paginatorRequestDto.Page == 0)
+        {
+            page = 1;
+        }
+        var query = _db.EmailTemplates.AsNoTracking().Where(et => et.TenantId == tenantId);
+        int totalRecords = await query.CountAsync();
+
+        var skipRecords = page * pageSize;
+
+        if (skipRecords >= totalRecords)
+        {
+            skipRecords = 0;
+        }
+
+        var data = await query
+            .Skip(skipRecords)
             .Take(pageSize)
-            .ToListAsync();        
+            .ToListAsync();
+        return new PaginatorResponseDto<EmailTemplate>
+            {
+            Data = data,           
+            PageSize = pageSize
+        };
+
     }
     public async Task UpdateAsync(EmailTemplate template)
     {
