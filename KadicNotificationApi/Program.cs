@@ -3,9 +3,12 @@ using FluentValidation.AspNetCore;
 using Hangfire;
 using Hangfire.SqlServer;
 using KadicNotificationApi.Application.DTOs;
+using KadicNotificationApi.Application.DTOs.SaveDto;
+using KadicNotificationApi.Application.DTOs.DeleteDto;
+using KadicNotificationApi.Application.DTOs.UpdateDto;
+using KadicNotificationApi.Application.Validators;
 using KadicNotificationApi.Application.Services.Implementation;
 using KadicNotificationApi.Application.Services.Interfaces;
-using KadicNotificationApi.Application.Validators;
 using KadicNotificationApi.Infraestructure.Config;
 using KadicNotificationApi.Infraestructure.DbContexts;
 using KadicNotificationApi.Infraestructure.Repository.Implementation;
@@ -32,12 +35,21 @@ builder.Services.AddDbContext<NotificationDbContext>
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SendTemplateValidator>();
 
+// Validators//
+
+//EmailTemplate
+builder.Services.AddScoped<IValidator<EmailTemplateSaveDto>, EmailTemplateSaveDtoValidator>();
+builder.Services.AddScoped<IValidator<EmailTemplateUpdateDto>, EmailTemplateUpdateDtoValidator>();
+builder.Services.AddScoped<IValidator<EmailTemplateDeleteDto>, EmailTemplateDeleteDtoValidator>();
+
 // Servicios
 builder.Services.AddScoped<ISendTemplateService, SendTemplateService>();
+builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 
 // Repository
 builder.Services.AddScoped<ISendTemplateRepository, SendTemplateRepository>();
 builder.Services.AddScoped<SmtpEmailTemplate>();
+builder.Services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
 
 // Swagger (antes de Build)
 builder.Services.AddEndpointsApiExplorer();
@@ -61,6 +73,7 @@ builder.Services.AddHangfireServer(options => options.SchedulePollingInterval = 
 
 
 var app = builder.Build();
+
 
 
 // Swagger

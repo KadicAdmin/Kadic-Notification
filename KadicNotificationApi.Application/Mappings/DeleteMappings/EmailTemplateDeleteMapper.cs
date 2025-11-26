@@ -9,8 +9,8 @@ namespace KadicNotificationApi.Application.Mappings.DeleteMappings
         {
             return new EmailTemplate
             {
-                Id = emailTemplateDeleteDto.Id,
-                TenantId = emailTemplateDeleteDto.TenantId,                
+                Id = emailTemplateDeleteDto.Id,                
+                TenantId = emailTemplateDeleteDto.TenantId              
             };
         }
     }

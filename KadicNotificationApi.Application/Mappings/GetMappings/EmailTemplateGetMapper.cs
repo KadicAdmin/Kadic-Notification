@@ -15,7 +15,8 @@ public static class EmailTemplateGetMapper
         {
             Id = entity.Id,
             Subject = entity.Subject,
-            TemplateTypeId = entity.TemplateTypeId
+            TemplateTypeId = entity.TemplateTypeId,
+            TenantId = entity.TenantId
         };
-    }
+    }    
 }

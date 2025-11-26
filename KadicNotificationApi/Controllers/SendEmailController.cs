@@ -7,11 +7,11 @@ namespace KadicNotificationApi.API.Controllers
 {
     [ApiController]
     [Route("api/email")]
-    public class EmailController : ControllerBase
+    public class SendEmailController : ControllerBase
     {       
         private readonly IBackgroundJobClient _backgroundJobClient;
 
-        public EmailController(ISendTemplateService service, IBackgroundJobClient backgroundJobClient)
+        public SendEmailController(ISendTemplateService service, IBackgroundJobClient backgroundJobClient)
         {
           
             _backgroundJobClient = backgroundJobClient;
