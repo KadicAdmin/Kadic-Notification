@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using KadicNotificationApi.Application.DTOs.SaveDto;
 
-namespace KadicNotificationApi.Application.Validators
+namespace KadicNotificationApi.Application.Validators.SendEmailValidators
 {
     public class SendTemplateValidator : AbstractValidator<SendTemplateSaveDto>
     {

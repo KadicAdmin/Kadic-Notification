@@ -6,7 +6,6 @@ using KadicNotificationApi.Application.DTOs;
 using KadicNotificationApi.Application.DTOs.SaveDto;
 using KadicNotificationApi.Application.DTOs.DeleteDto;
 using KadicNotificationApi.Application.DTOs.UpdateDto;
-using KadicNotificationApi.Application.Validators;
 using KadicNotificationApi.Application.Services.Implementation;
 using KadicNotificationApi.Application.Services.Interfaces;
 using KadicNotificationApi.Infraestructure.Config;
@@ -15,6 +14,8 @@ using KadicNotificationApi.Infraestructure.Repository.Implementation;
 using KadicNotificationApi.Infraestructure.Repository.Interface;
 using KadicNotificationApi.Infraestructure.SMTP;
 using Microsoft.EntityFrameworkCore;
+using KadicNotificationApi.Application.Validators.EmailTemplateValidators;
+using KadicNotificationApi.Application.Validators.SendEmailValidators;
 
 
 var builder = WebApplication.CreateBuilder(args);

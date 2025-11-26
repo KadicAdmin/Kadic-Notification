@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using KadicNotificationApi.Application.DTOs.DeleteDto;
 
-namespace KadicNotificationApi.Application.Validators
+namespace KadicNotificationApi.Application.Validators.EmailTemplateValidators
 {
     public class EmailTemplateDeleteDtoValidator : AbstractValidator<EmailTemplateDeleteDto>
     {
