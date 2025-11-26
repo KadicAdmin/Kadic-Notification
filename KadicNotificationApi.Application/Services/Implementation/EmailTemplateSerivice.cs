@@ -14,14 +14,14 @@ using System.Net;
 
 namespace KadicNotificationApi.Application.Services.Implementation;
 
-public class EmailTemplateSerivice : IEmailTemplateSerivice
+public class EmailTemplateService : IEmailTemplateService
 {
-    private readonly IEmailTemplateRepository _emailTemplateRepository;
+    private readonly IEmailTemplateRepository _emailTemplateRepository;    
     private readonly IValidator<EmailTemplateSaveDto> _validatorSaveDto;
     private readonly IValidator<EmailTemplateDeleteDto>_validatorDeleteDto;
     private readonly IValidator<EmailTemplateUpdateDto> _validatorUpdateDto;
 
-    public EmailTemplateSerivice(IEmailTemplateRepository emailTemplateRepository,
+    public EmailTemplateService(IEmailTemplateRepository emailTemplateRepository,
         IValidator<EmailTemplateSaveDto> validatorSaveDto,
         IValidator<EmailTemplateDeleteDto> validatorDeleteDto,
         IValidator<EmailTemplateUpdateDto> validatorUpdateDto)
@@ -42,19 +42,31 @@ public class EmailTemplateSerivice : IEmailTemplateSerivice
         var entity = template.ToGetDto();
         return Result.Success(entity);
     }
-    public async Task<Result<PaginatorResponseDto<EmailTemplateGetDto>>> GetByTenant(int tenantId, PaginatorRequestDto paginatorRequestDto)
+    public async Task<Result<PaginatorResponseDto<EmailTenantGetDto>>> GetByTenant(int tenantId, PaginatorRequestDto paginatorRequestDto)
     {
         var pageResult = await _emailTemplateRepository.GetByTenantAsync(tenantId, paginatorRequestDto);
+
         if (pageResult == null || !pageResult.Data.Any())
         {
             var error = new Error(HttpStatusCode.NotFound, "Registros No Encontrados");
-            return Result.Fail<PaginatorResponseDto<EmailTemplateGetDto>>(error);
-        }
-        var dtoPaginator  = new PaginatorResponseDto<EmailTemplateGetDto>
+            return Result.Fail<PaginatorResponseDto<EmailTenantGetDto>>(error);
+        }        
+        var dtoData = pageResult.Data
+            .Select(et => new EmailTenantGetDto
+            {
+                TenantId = et.TenantId
+            })            
+            .ToList();
+
+        var dtoPaginator = new PaginatorResponseDto<EmailTenantGetDto>
         {
-            Data = pageResult.Data.Select(et => et.ToGetDto()).ToList(),
-            PageSize = pageResult.PageSize 
+            Data = dtoData,
+            TotalRecords = pageResult.TotalRecords,
+            CurrentPage = pageResult.CurrentPage,
+            PageSize = pageResult.PageSize,
+            TotalPages = pageResult.TotalPages
         };
+
         return Result.Success(dtoPaginator);
     }
     public async Task<Result> Update(EmailTemplateUpdateDto emailTemplateUpdateDto)
@@ -90,22 +102,17 @@ public class EmailTemplateSerivice : IEmailTemplateSerivice
         await _emailTemplateRepository.SaveAsync(template);
         return Result.Success();
     }   
-    public async Task<Result> Delete(EmailTemplateDeleteDto emailTemplateDeleteDto)
+    public async Task<Result> Delete(int id, int tenantId)
     {
-      var validationResult = await _validatorDeleteDto.ValidateAsync(emailTemplateDeleteDto);
-        if (!validationResult.IsValid)
-        {
-            var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-            var error = new Error(HttpStatusCode.BadRequest, "La solicitud contiene datos inválidos.", errors);
-            return Result.Fail(error);
-        }
-        var template = await _emailTemplateRepository.GetByIdAsync(emailTemplateDeleteDto.Id, emailTemplateDeleteDto.TenantId);
+     
+        var template = await _emailTemplateRepository.GetByIdAsync(id, tenantId);
         if (template == null)
         {
-            var error = new Error(HttpStatusCode.NotFound, "Registro No Encontrado");
+            var errors = new List<string> { "Registro No Encontrado" };
+            var error = new Error(HttpStatusCode.NotFound, "Registro No Encontrado", errors);
             return Result.Fail(error);
         }
-        await _emailTemplateRepository.DeleteAsync(template);
+        await _emailTemplateRepository.DeleteAsync(id, tenantId);
         return Result.Success();
     }
 }

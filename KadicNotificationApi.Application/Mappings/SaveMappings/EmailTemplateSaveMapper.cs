@@ -9,8 +9,9 @@ namespace KadicNotificationApi.Application.Mappings.SaveMappings
       {
         return new EmailTemplate
         {
-          Subject = emailTemplateSaveDto.Subjetc,
-          TemplateTypeId = emailTemplateSaveDto.TemplateTypeId
+          Subject = emailTemplateSaveDto.Subject,
+          TemplateTypeId = emailTemplateSaveDto.TemplateTypeId,
+          TenantId = emailTemplateSaveDto.TenantId
         };
         }
     }

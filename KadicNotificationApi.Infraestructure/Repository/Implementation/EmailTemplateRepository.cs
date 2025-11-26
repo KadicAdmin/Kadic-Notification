@@ -17,55 +17,63 @@ public class EmailTemplateRepository : IEmailTemplateRepository
 
     public async Task<EmailTemplate?> GetByIdAsync(int id, int tenantId)
     {
-        return await _db.EmailTemplates.FindAsync(id, tenantId);
+        return await _db.EmailTemplates
+            .AsNoTracking()
+            .FirstOrDefaultAsync(et => et.Id == id && et.TenantId == tenantId);
     }
     public async Task<PaginatorResponseDto<EmailTemplate>> GetByTenantAsync(int tenantId, PaginatorRequestDto paginatorRequestDto)
+
     {
+        var page = paginatorRequestDto.Page ?? 0;
+        var pageSize = paginatorRequestDto.PageSize ?? 500;
 
-        int page = 0;
-        int pageSize = paginatorRequestDto.PageSize ?? 25;
+        if (page < 0) page = 0;
+        if (pageSize <= 0) pageSize = 500;
 
-        if (paginatorRequestDto.Page == null || paginatorRequestDto.Page == 0)
-        {
-            page = 1;
-        }
-        var query = _db.EmailTemplates.AsNoTracking().Where(et => et.TenantId == tenantId);
-        int totalRecords = await query.CountAsync();
+        var query = _db.EmailTemplates
+            .AsNoTracking()
+            .Where(et => et.TenantId == tenantId);
 
-        var skipRecords = page * pageSize;
+        var totalRecords = await query.CountAsync();
 
-        if (skipRecords >= totalRecords)
-        {
-            skipRecords = 0;
-        }
+        var totalPages = totalRecords == 0
+            ? 0
+            : (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+        if (totalPages > 0 && page >= totalPages)
+            page = totalPages - 1;
 
         var data = await query
-            .Skip(skipRecords)
+            .Skip(page * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        return new PaginatorResponseDto<EmailTemplate>
-            {
-            Data = data,           
-            PageSize = pageSize
-        };
 
+        return new PaginatorResponseDto<EmailTemplate>
+        {
+            Data = data,
+            TotalRecords = totalRecords,
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalPages = totalPages
+        };
     }
     public async Task UpdateAsync(EmailTemplate template)
     {
-        _db.EmailTemplates.Attach(template);
-
-        var entry = _db.Entry(template);
-        entry.State = EntityState.Modified;
-
-        entry.Property(e => e.TenantId).IsModified = false;
-
+      _db.EmailTemplates.Update(template);
         await _db.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(EmailTemplate template)
+    public async Task DeleteAsync(int id, int tenantId)
     {
-        _db.EmailTemplates.Remove(template);
-        await _db.SaveChangesAsync();
+        var entity = await _db.EmailTemplates
+        .FirstOrDefaultAsync(e => e.Id == id && e.TenantId == tenantId);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException("Registro No Encontrado");
+        }
+        _db.EmailTemplates.Remove(entity);
+            await _db.SaveChangesAsync();
+                    
     }
     public async Task SaveAsync(EmailTemplate template)
     {
