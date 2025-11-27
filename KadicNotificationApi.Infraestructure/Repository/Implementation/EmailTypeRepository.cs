@@ -5,7 +5,6 @@ using KadicTechnology.CommonLib.Paginator;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 
-
 namespace KadicNotificationApi.Infraestructure.Repository.Implementation;
 
 public class EmailTypeRepository : IEmailTypeRepository
@@ -27,14 +26,13 @@ public class EmailTypeRepository : IEmailTypeRepository
     {
         int page = 0;
         int pageSize = paginatorRequestDto.PageSize ?? 25;
-
         if (paginatorRequestDto.Page == null || paginatorRequestDto.Page == 0)
         {
             page = 1;
         }
         var query = from EmailTemplateTypes in _db.Set<EmailTemplateType>()
                     select EmailTemplateTypes;
-        var sortField = paginatorRequestDto.SortField == null ? "Id" : paginatorRequestDto.SortField.ToLower();
+        var sortField = paginatorRequestDto.SortField == null ? "" : paginatorRequestDto.SortField.ToLower();
         if (!String.IsNullOrEmpty(sortField))
         {
             bool isDescending = paginatorRequestDto.SortOrder?.ToLower() == "desc";
@@ -48,12 +46,10 @@ public class EmailTypeRepository : IEmailTypeRepository
             {
                 query = sortingFields[sortField](query);
             }
-
             else
             {
                 string sortOrder = isDescending ? "descending" : "ascending";
                 query = query.OrderBy($"{sortField} {sortOrder}");
-
             }
         }
         int totalRecords = await query.CountAsync();
@@ -73,7 +69,6 @@ public class EmailTypeRepository : IEmailTypeRepository
             Data = data,
             TotalRecords = totalRecords
         };
-
     }
     public async Task SaveAsync(EmailTemplateType emailTemplateType)
     {

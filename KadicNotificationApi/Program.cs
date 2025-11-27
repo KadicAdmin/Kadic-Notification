@@ -3,19 +3,20 @@ using FluentValidation.AspNetCore;
 using Hangfire;
 using Hangfire.SqlServer;
 using KadicNotificationApi.Application.DTOs;
-using KadicNotificationApi.Application.DTOs.SaveDto;
 using KadicNotificationApi.Application.DTOs.DeleteDto;
+using KadicNotificationApi.Application.DTOs.SaveDto;
 using KadicNotificationApi.Application.DTOs.UpdateDto;
 using KadicNotificationApi.Application.Services.Implementation;
 using KadicNotificationApi.Application.Services.Interfaces;
+using KadicNotificationApi.Application.Validators.EmailTemplateValidators;
+using KadicNotificationApi.Application.Validators.EmailTypeValidators;
+using KadicNotificationApi.Application.Validators.SendEmailValidators;
 using KadicNotificationApi.Infraestructure.Config;
 using KadicNotificationApi.Infraestructure.DbContexts;
 using KadicNotificationApi.Infraestructure.Repository.Implementation;
 using KadicNotificationApi.Infraestructure.Repository.Interface;
 using KadicNotificationApi.Infraestructure.SMTP;
 using Microsoft.EntityFrameworkCore;
-using KadicNotificationApi.Application.Validators.EmailTemplateValidators;
-using KadicNotificationApi.Application.Validators.SendEmailValidators;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,14 +44,22 @@ builder.Services.AddScoped<IValidator<EmailTemplateSaveDto>, EmailTemplateSaveDt
 builder.Services.AddScoped<IValidator<EmailTemplateUpdateDto>, EmailTemplateUpdateDtoValidator>();
 builder.Services.AddScoped<IValidator<EmailTemplateDeleteDto>, EmailTemplateDeleteDtoValidator>();
 
+//EmailType
+builder.Services.AddScoped<IValidator<EmailTypeSaveDto>, EmailTypeSaveValidator>();
+builder.Services.AddScoped<IValidator<EmailTypeUpdateDto>, EmailTypeUpdateValidator>();
+builder.Services.AddScoped<IValidator<EmailTypeDeleteDto>, EmailTypeDeleteValidator>();
+
+
 // Servicios
 builder.Services.AddScoped<ISendTemplateService, SendTemplateService>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddScoped<IEmailTypeService, EmailTypeService>();
 
 // Repository
 builder.Services.AddScoped<ISendTemplateRepository, SendTemplateRepository>();
 builder.Services.AddScoped<SmtpEmailTemplate>();
 builder.Services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
+builder.Services.AddScoped<IEmailTypeRepository, EmailTypeRepository>();
 
 // Swagger (antes de Build)
 builder.Services.AddEndpointsApiExplorer();

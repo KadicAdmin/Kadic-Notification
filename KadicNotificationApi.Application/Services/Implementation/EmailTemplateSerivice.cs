@@ -108,8 +108,8 @@ public class EmailTemplateService : IEmailTemplateService
         var template = await _emailTemplateRepository.GetByIdAsync(id, tenantId);
         if (template == null)
         {
-            var errors = new List<string> { "Registro No Encontrado" };
-            var error = new Error(HttpStatusCode.NotFound, "Registro No Encontrado", errors);
+            var errors = new List<string> { GeneralMessages.RecordNotFound };
+            var error = new Error(HttpStatusCode.NotFound, GeneralMessages.RecordNotFound, errors);
             return Result.Fail(error);
         }
         await _emailTemplateRepository.DeleteAsync(id, tenantId);

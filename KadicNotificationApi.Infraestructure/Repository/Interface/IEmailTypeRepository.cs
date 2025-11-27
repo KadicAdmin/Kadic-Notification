@@ -1,6 +1,8 @@
 ﻿using KadicNotificationApi.Domain.Entities;
 using KadicTechnology.CommonLib.Paginator;
+
 namespace KadicNotificationApi.Infraestructure.Repository.Interface
+
 {
     public interface IEmailTypeRepository
     {
