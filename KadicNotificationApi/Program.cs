@@ -15,6 +15,7 @@ using KadicNotificationApi.Infraestructure.Repository.Implementation;
 using KadicNotificationApi.Infraestructure.Repository.Interface;
 using KadicNotificationApi.Infraestructure.SMTP;
 using Microsoft.EntityFrameworkCore;
+using KadicNotificationApi.Domain.Entities;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,11 +46,14 @@ builder.Services.AddScoped<IValidator<EmailTemplateDeleteDto>, EmailTemplateDele
 // Servicios
 builder.Services.AddScoped<ISendTemplateService, SendTemplateService>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddScoped<IMediaService, MediaService>();
 
 // Repository
 builder.Services.AddScoped<ISendTemplateRepository, SendTemplateRepository>();
 builder.Services.AddScoped<SmtpEmailTemplate>();
 builder.Services.AddScoped<IEmailTemplateRepository, EmailTemplateRepository>();
+builder.Services.AddScoped<IPdfFileRepository, PdfFileRepository>();
+builder.Services.AddScoped<IVideoFileRepository, VideoFileRepository>();
 
 // Swagger (antes de Build)
 builder.Services.AddEndpointsApiExplorer();

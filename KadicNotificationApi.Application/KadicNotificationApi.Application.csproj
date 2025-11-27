@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Reference Include="KadicTechnology.CommonLib">
-      <HintPath>..\..\..\..\..\Downloads\New folder\KadicTechnology.CommonLib\KadicTechnology.CommonLib\bin\Debug\net8.0\KadicTechnology.CommonLib.dll</HintPath>
+      <HintPath>..\..\KadicTechnology.CommonLib\KadicTechnology.CommonLib\bin\Debug\net8.0\KadicTechnology.CommonLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 
