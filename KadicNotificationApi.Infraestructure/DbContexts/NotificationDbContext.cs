@@ -9,6 +9,8 @@ public class NotificationDbContext : DbContext
     
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<EmailTemplateType> EmailTemplateTypes { get; set; }
+    public DbSet<PdfFile> PdfFiles { get; set; } = null!;
+    public DbSet<VideoFile> VideoFiles { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
